@@ -30,7 +30,7 @@ namespace TestWPF
             catch (CompositionException ex)
             {
                 
-                throw;
+                throw ex;
             }
         }
     }

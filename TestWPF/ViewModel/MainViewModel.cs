@@ -46,12 +46,6 @@ namespace TestWPF.ViewModel
         {
             _messageBoxService = messageBoxService;
             _dispatchService = dispatchService;
-
-            api.OnError += OnError;
-            api.OnLoginComplete += OnLoginComplete;
-            api.OnGetAllSongsComplete += OnGetAllSongsComplete;
-            api.OnCreatePlaylistComplete += OnCreatePlaylistComplete;
-            api.OnReportProgress += OnReportProgress;
         }
 
         #endregion
@@ -184,7 +178,14 @@ namespace TestWPF.ViewModel
 
         private void OnLogin(object parameter)
         {
-            api.Login(Email, Password);
+            api.Login(Email, Password, result =>
+            {
+                if (result.Data)
+                {
+                    LoggedOut = false;
+                    RaiseCanExecuteChanged();
+                }
+            });
         }
 
         #endregion
@@ -212,7 +213,16 @@ namespace TestWPF.ViewModel
         {
             FetchingTracks = true;
             RaiseCanExecuteChanged();
-            api.GetAllSongs();
+            api.GetAllSongs(result =>
+            {
+                Albums = new ObservableCollection<AlbumViewModel>(from song in result.Data
+                                                                  orderby song.Album
+                                                                  group song by song.Album into album
+                                                                  select new AlbumViewModel(album.Key, album));
+
+                FetchingTracks = false;
+                RaiseCanExecuteChanged();
+            });
         }
 
         #endregion
@@ -238,7 +248,11 @@ namespace TestWPF.ViewModel
 
         private void OnFetchPlaylists(object parameter)
         {
-            api.GetPlaylist();
+            api.GetAllPlaylists(result =>
+                {
+
+                });
+
         }
 
         #endregion
@@ -264,7 +278,9 @@ namespace TestWPF.ViewModel
 
         private void OnCreateTestPlaylist(object parameter)
         {
-            api.AddPlaylist("Testing");
+            api.AddPlaylist("Testing", result =>
+ {
+            });
         }
 
         #endregion
@@ -356,12 +372,6 @@ namespace TestWPF.ViewModel
             _messageBoxService.ShowMessageBox();
         }
 
-        private void OnLoginComplete(object sender, EventArgs e)
-        {
-            LoggedOut = false;
-            RaiseCanExecuteChanged();
-        }
-
         private void RaiseCanExecuteChanged()
         {
             _dispatchService.Invoke(() =>
@@ -373,17 +383,6 @@ namespace TestWPF.ViewModel
                 DeletePlaylistCommand.RaiseCanExecuteChanged();
                 GetPlaylistSongsCommand.RaiseCanExecuteChanged();
             });
-        }
-
-        private void OnGetAllSongsComplete(List<GoogleMusicSong> songList)
-        {
-            Albums = new ObservableCollection<AlbumViewModel>(from song in songList
-                                                              orderby song.Album
-                                                              group song by song.Album into album
-                                                              select new AlbumViewModel(album.Key, album));
-
-            FetchingTracks = false;
-            RaiseCanExecuteChanged();
         }
 
         private void OnCreatePlaylistComplete(AddPlaylistResp resp)
