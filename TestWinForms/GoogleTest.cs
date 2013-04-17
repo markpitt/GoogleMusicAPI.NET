@@ -90,9 +90,6 @@ namespace GoogleMusicTest
                 this.Invoke(new MethodInvoker( delegate {
                     lvSongs.Items.Add(lvi);
                 }));
-
-				//if (num >= 100)
-				//	break;
             }
 			this.Invoke(new MethodInvoker(delegate { lvSongs.EndUpdate(); }));
         }

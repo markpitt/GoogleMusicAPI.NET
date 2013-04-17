@@ -13,62 +13,62 @@ namespace GoogleMusicAPI
     [DataContract]
     public class GoogleMusicSongUrl
     {
-        [DataMember(Name="url")]
+        [DataMember(Name = "url")]
         public String URL { get; set; }
     };
 
     [DataContract]
     public class AddPlaylistResp
     {
-        [DataMember(Name="id")]
+        [DataMember(Name = "id")]
         public String ID { get; set; }
 
-        [DataMember(Name="title")]
+        [DataMember(Name = "title")]
         public String Title { get; set; }
 
-        [DataMember(Name="success")]
+        [DataMember(Name = "success")]
         public bool Success { get; set; }
     }
 
     [DataContract]
     public class DeletePlaylistResp
     {
-        [DataMember(Name="deleteId")]
+        [DataMember(Name = "deleteId")]
         public String ID { get; set; }
     }
 
     [DataContract]
     public class GoogleMusicPlaylists
     {
-        [DataMember(Name="playlists")]
+        [DataMember(Name = "playlists")]
         public List<GoogleMusicPlaylist> UserPlaylists { get; set; }
 
-        [DataMember(Name="magicPlaylists")]
+        [DataMember(Name = "magicPlaylists")]
         public List<GoogleMusicPlaylist> InstantMixes { get; set; }
     }
 
     [DataContract]
     public class GoogleMusicPlaylist
     {
-        [DataMember(Name= "title")]
+        [DataMember(Name = "title")]
         public string Title { get; set; }
 
-        [DataMember(Name= "playlistId")]
+        [DataMember(Name = "playlistId")]
         public string PlaylistID { get; set; }
 
-        [DataMember(Name= "requestTime")]
+        [DataMember(Name = "requestTime")]
         public double RequestTime { get; set; }
 
-        [DataMember(Name= "continuationToken")]
+        [DataMember(Name = "continuationToken")]
         public string ContToken { get; set; }
 
-        [DataMember(Name= "differentialUpdate")]
+        [DataMember(Name = "differentialUpdate")]
         public bool DiffUpdate { get; set; }
 
-        [DataMember(Name= "playlist")]
+        [DataMember(Name = "playlist")]
         public List<GoogleMusicSong> Songs { get; set; }
 
-        [DataMember(Name= "continuation")]
+        [DataMember(Name = "continuation")]
         public bool Cont { get; set; }
 
         public string TrackString
@@ -82,91 +82,91 @@ namespace GoogleMusicAPI
     {
         string albumart;
 
-        [DataMember(Name= "genre")]
+        [DataMember(Name = "genre")]
         public string Genre { get; set; }
 
-        [DataMember(Name= "beatsPerMinute")]
+        [DataMember(Name = "beatsPerMinute")]
         public int BPM { get; set; }
 
-        [DataMember(Name= "albumArtistNorm")]
+        [DataMember(Name = "albumArtistNorm")]
         public string AlbumArtistNorm { get; set; }
 
-        [DataMember(Name= "artistNorm")]
+        [DataMember(Name = "artistNorm")]
         public string ArtistNorm { get; set; }
 
-        [DataMember(Name= "album")]
+        [DataMember(Name = "album")]
         public string Album { get; set; }
 
-        [DataMember(Name= "lastPlayed")]
+        [DataMember(Name = "lastPlayed")]
         public double LastPlayed { get; set; }
 
-        [DataMember(Name= "type")]
+        [DataMember(Name = "type")]
         public GoogleMusicType Type { get; set; }
 
-        [DataMember(Name= "disc")]
+        [DataMember(Name = "disc")]
         public int Disc { get; set; }
 
-        [DataMember(Name= "id")]
+        [DataMember(Name = "id")]
         public string ID { get; set; }
 
-        [DataMember(Name= "composer")]
+        [DataMember(Name = "composer")]
         public string Composer { get; set; }
 
-        [DataMember(Name= "title")]
+        [DataMember(Name = "title")]
         public string Title { get; set; }
 
-        [DataMember(Name= "albumArtist")]
+        [DataMember(Name = "albumArtist")]
         public string AlbumArtist { get; set; }
 
-        [DataMember(Name= "totalTracks")]
+        [DataMember(Name = "totalTracks")]
         public int TotalTracks { get; set; }
 
-        [DataMember(Name= "name")]
+        [DataMember(Name = "name")]
         public string Name { get; set; }
 
-        [DataMember(Name= "totalDiscs")]
+        [DataMember(Name = "totalDiscs")]
         public int TotalDiscs { get; set; }
 
-        [DataMember(Name= "year")]
+        [DataMember(Name = "year")]
         public int Year { get; set; }
 
-        [DataMember(Name= "titleNorm")]
+        [DataMember(Name = "titleNorm")]
         public string TitleNorm { get; set; }
 
-        [DataMember(Name= "artist")]
+        [DataMember(Name = "artist")]
         public string Artist { get; set; }
 
-        [DataMember(Name= "albumNorm")]
+        [DataMember(Name = "albumNorm")]
         public string AlbumNorm { get; set; }
 
-        [DataMember(Name= "track")]
+        [DataMember(Name = "track")]
         public int Track { get; set; }
 
-        [DataMember(Name= "durationMillis")]
+        [DataMember(Name = "durationMillis")]
         public long Duration { get; set; }
 
-        [DataMember(Name= "albumArt")]
+        [DataMember(Name = "albumArt")]
         public string AlbumArt { get; set; }
 
-        [DataMember(Name= "deleted")]
+        [DataMember(Name = "deleted")]
         public bool Deleted { get; set; }
 
-        [DataMember(Name= "url")]
+        [DataMember(Name = "url")]
         public string URL { get; set; }
 
-        [DataMember(Name= "creationDate")]
+        [DataMember(Name = "creationDate")]
         public float CreationDate { get; set; }
 
-        [DataMember(Name= "playCount")]
+        [DataMember(Name = "playCount")]
         public int Playcount { get; set; }
 
-        [DataMember(Name= "rating")]
+        [DataMember(Name = "rating")]
         public int Rating { get; set; }
 
-        [DataMember(Name= "comment")]
+        [DataMember(Name = "comment")]
         public string Comment { get; set; }
 
-        [DataMember(Name= "albumArtUrl")]
+        [DataMember(Name = "albumArtUrl")]
         public string ArtURL
         {
             get
@@ -185,14 +185,20 @@ namespace GoogleMusicAPI
         }
     }
 
-	public enum GoogleMusicType : int
-	{
-		Purchased = 1,
-		Uploaded = 2,
-		Matched = 6
-	}
+    public class APIResponse<T>
+    {
+        public T Data { get; set; }
+        public Exception Exception { get; set; }
+    }
+
+    public enum GoogleMusicType : int
+    {
+        Purchased = 1,
+        Uploaded = 2,
+        Matched = 6
+    }
 }
 
 
-	
+
 

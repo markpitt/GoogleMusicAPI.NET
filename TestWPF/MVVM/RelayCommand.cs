@@ -1,17 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace TestWPF
+namespace TestWPF.MVVM
 {
 	public class RelayCommand : ICommand
 	{
+		#region Events
+
 		public event EventHandler CanExecuteChanged;
+
+		#endregion
+
+		#region Fields
+
 		private Predicate<object> _canExecute;
 		private Action<object> _execute;
+
+		#endregion
+
+		#region Constructors
 
 		public RelayCommand(Action<object> execute)
 		{
@@ -24,6 +31,10 @@ namespace TestWPF
 			_execute = execute;
 		}
 
+		#endregion
+
+		#region Public
+
 		public bool CanExecute(object parameter)
 		{
 			if (_canExecute != null)
@@ -32,10 +43,20 @@ namespace TestWPF
 			}
 			return true;
 		}
-				
+
 		public void Execute(object parameter)
 		{
 			_execute(parameter);
 		}
+
+		public void RaiseCanExecuteChanged()
+		{
+			if (CanExecuteChanged != null)
+			{
+				CanExecuteChanged(this, new EventArgs());
+			}
+		}
+
+		#endregion
 	}
 }

@@ -7,8 +7,8 @@
     <ProjectGuid>{52442B20-D632-4412-9628-352FFE948C73}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GoogleMusicAPI.NET</RootNamespace>
-    <AssemblyName>GoogleMusicAPI.NET</AssemblyName>
+    <RootNamespace>GoogleMusicAPI</RootNamespace>
+    <AssemblyName>GoogleMusicAPI</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile4</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

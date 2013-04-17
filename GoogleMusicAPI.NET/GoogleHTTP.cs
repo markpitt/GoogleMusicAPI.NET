@@ -14,24 +14,26 @@ namespace GoogleMusicAPI
 
         private class RequestState
         {
-            public HttpWebRequest Request;
-            public byte[] UploadData;
-            public RequestCompletedEventHandler CompletedCallback;
-
-            public RequestState(HttpWebRequest request, byte[] uploadData,  RequestCompletedEventHandler completedCallback)
-            {
-                Request = request;
-                UploadData = uploadData;
-                CompletedCallback = completedCallback;
-            }
+            public HttpWebRequest Request { get; set; }
+            public byte[] UploadData { get; set; }
+            public Action<GoogleMusicResponse> CompletedCallback { get; set; }
         }
 
-        public HttpWebRequest UploadDataAsync(Uri address, FormBuilder form, RequestCompletedEventHandler complete)
+        public class GoogleMusicResponse
         {
-            return UploadDataAsync(address, form.ContentType, form.GetBytes(),complete);
+            public HttpWebRequest Request;
+            public HttpWebResponse Response;
+            public string JsonData;
+            public Exception Exception;
         }
 
-        public HttpWebRequest UploadDataAsync(Uri address, string contentType, byte[] data,  RequestCompletedEventHandler completedCallback)
+
+        public HttpWebRequest UploadDataAsync(Uri address, FormBuilder form, Action<GoogleMusicResponse> completedCallback)
+        {
+            return UploadDataAsync(address, form.ContentType, form.GetBytes(), completedCallback);
+        }
+
+        public HttpWebRequest UploadDataAsync(Uri address, string contentType, byte[] data, Action<GoogleMusicResponse> completedCallback)
         {
             HttpWebRequest request = SetupRequest(address);
 
@@ -39,14 +41,14 @@ namespace GoogleMusicAPI
                 request.ContentType = contentType;
 
             request.Method = "POST";
-            RequestState state = new RequestState(request, data, completedCallback);
+            RequestState state = new RequestState { Request = request, UploadData = data, CompletedCallback = completedCallback };
             IAsyncResult result = request.BeginGetRequestStream(OpenWrite, state);
 
             return request;
         }
 
 
-        public HttpWebRequest DownloadStringAsync(Uri address, RequestCompletedEventHandler completedCallback, int millisecondsTimeout = 10000)
+        public HttpWebRequest DownloadStringAsync(Uri address, Action<GoogleMusicResponse> completedCallback, int millisecondsTimeout = 10000)
         {
             HttpWebRequest request = SetupRequest(address);
             request.Method = "GET";
@@ -54,10 +56,10 @@ namespace GoogleMusicAPI
             return request;
         }
 
-        public void DownloadDataAsync(HttpWebRequest request, byte[] d, int millisecondsTimeout,
-           RequestCompletedEventHandler completedCallback)
+        public void DownloadDataAsync(HttpWebRequest request, byte[] data, int millisecondsTimeout,
+            Action<GoogleMusicResponse> completedCallback)
         {
-            RequestState state = new RequestState(request, d, completedCallback);
+            RequestState state = new RequestState { Request = request, UploadData = data, CompletedCallback = completedCallback };
             IAsyncResult result = request.BeginGetResponse(GetResponse, state);
         }
 
@@ -75,7 +77,7 @@ namespace GoogleMusicAPI
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(address);
 
             request.CookieContainer = AuthorizationCookieCont;
-            
+
             if (AuthroizationToken != null)
                 request.Headers[HttpRequestHeader.Authorization] = String.Format("GoogleLogin auth={0}", AuthroizationToken);
 
@@ -117,7 +119,11 @@ namespace GoogleMusicAPI
             catch (Exception ex)
             {
                 if (state.CompletedCallback != null)
-                    state.CompletedCallback(state.Request, null, null, ex);
+                    state.CompletedCallback(new GoogleMusicResponse
+                    {
+                        Request = state.Request,
+                        Exception = ex
+                    });//(state.Request, null, null, ex);
             }
         }
 
@@ -126,7 +132,7 @@ namespace GoogleMusicAPI
             RequestState state = (RequestState)ar.AsyncState;
             HttpWebResponse response = null;
             Exception error = null;
-            String result = "";
+            String result = string.Empty;
 
             try
             {
@@ -145,7 +151,13 @@ namespace GoogleMusicAPI
             }
 
             if (state.CompletedCallback != null)
-                state.CompletedCallback(state.Request, response, result, error);
+                state.CompletedCallback(new GoogleMusicResponse
+                {
+                    Request = state.Request,
+                    Response = response,
+                    JsonData = result,
+                    Exception = error
+                });
         }
 
         public static String GetCookieValue(String cookieName)
