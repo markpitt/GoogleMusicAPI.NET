@@ -10,6 +10,12 @@ using System.Runtime.Serialization;
 
 namespace GoogleMusicAPI
 {
+    public class GoogleLoginResponse
+    {
+        public bool LoggedIn { get; set; }
+        public string AuthorizationToken { get; set; }
+    }
+
     [DataContract]
     public class GoogleMusicSongUrl
     {
@@ -183,6 +189,50 @@ namespace GoogleMusicAPI
                 return Artist + ", " + Album;
             }
         }
+    }
+
+    [DataContract]
+    public class GoogleMusicSearchResults
+    {
+        [DataMember(Name = "results")]
+        public GoogleMusicSearchResult Results { get; set; }
+    }
+
+    [DataContract]
+    public class GoogleMusicSearchResult
+    {
+        [DataMember(Name = "artists")]
+        public List<GoogleMusicSong> Artists { get; set; }
+
+        [DataMember(Name = "albums")]
+        public List<GoogleMusicAlbums> Albums { get; set; }
+
+        [DataMember(Name = "songs")]
+        public List<GoogleMusicSong> Songs { get; set; }
+
+    }
+
+    [DataContract]
+    public class GoogleMusicAlbums
+    {
+        [DataMember(Name = "artistName")]
+        public string ArtistName { get; set; }
+
+        [DataMember(Name = "imageUrl")]
+        public string ImageUrl { get; set; }
+
+        [DataMember(Name = "albumArtist")]
+        public string AlbumArtist { get; set; }
+
+        [DataMember(Name = "albumName")]
+        public string AlbumName { get; set; }
+    }
+
+    [DataContract]
+    public class GoogleMusicChangeMetadata
+    {
+        [DataMember(Name = "entries")]
+        public List<GoogleMusicSong> Songs { get; set; }
     }
 
     public class APIResponse<T>

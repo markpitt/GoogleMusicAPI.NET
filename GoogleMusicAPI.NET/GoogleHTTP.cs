@@ -4,6 +4,14 @@ using System.Net;
 
 namespace GoogleMusicAPI
 {
+    public class GoogleHTTPResponse
+    {
+        public HttpWebRequest Request;
+        public HttpWebResponse Response;
+        public string JsonData;
+        public Exception Exception;
+    }
+
     public class GoogleHTTP
     {
         public delegate void RequestCompletedEventHandler(HttpWebRequest request, HttpWebResponse response, String jsonData, Exception error);
@@ -16,24 +24,15 @@ namespace GoogleMusicAPI
         {
             public HttpWebRequest Request { get; set; }
             public byte[] UploadData { get; set; }
-            public Action<GoogleMusicResponse> CompletedCallback { get; set; }
+            public Action<GoogleHTTPResponse> CompletedCallback { get; set; }
         }
-
-        public class GoogleMusicResponse
-        {
-            public HttpWebRequest Request;
-            public HttpWebResponse Response;
-            public string JsonData;
-            public Exception Exception;
-        }
-
-
-        public HttpWebRequest UploadDataAsync(Uri address, FormBuilder form, Action<GoogleMusicResponse> completedCallback)
+        
+        public HttpWebRequest UploadDataAsync(Uri address, FormBuilder form, Action<GoogleHTTPResponse> completedCallback)
         {
             return UploadDataAsync(address, form.ContentType, form.GetBytes(), completedCallback);
         }
 
-        public HttpWebRequest UploadDataAsync(Uri address, string contentType, byte[] data, Action<GoogleMusicResponse> completedCallback)
+        public HttpWebRequest UploadDataAsync(Uri address, string contentType, byte[] data, Action<GoogleHTTPResponse> completedCallback)
         {
             HttpWebRequest request = SetupRequest(address);
 
@@ -48,7 +47,7 @@ namespace GoogleMusicAPI
         }
 
 
-        public HttpWebRequest DownloadStringAsync(Uri address, Action<GoogleMusicResponse> completedCallback, int millisecondsTimeout = 10000)
+        public HttpWebRequest DownloadStringAsync(Uri address, Action<GoogleHTTPResponse> completedCallback, int millisecondsTimeout = 10000)
         {
             HttpWebRequest request = SetupRequest(address);
             request.Method = "GET";
@@ -57,7 +56,7 @@ namespace GoogleMusicAPI
         }
 
         public void DownloadDataAsync(HttpWebRequest request, byte[] data, int millisecondsTimeout,
-            Action<GoogleMusicResponse> completedCallback)
+            Action<GoogleHTTPResponse> completedCallback)
         {
             RequestState state = new RequestState { Request = request, UploadData = data, CompletedCallback = completedCallback };
             IAsyncResult result = request.BeginGetResponse(GetResponse, state);
@@ -119,7 +118,7 @@ namespace GoogleMusicAPI
             catch (Exception ex)
             {
                 if (state.CompletedCallback != null)
-                    state.CompletedCallback(new GoogleMusicResponse
+                    state.CompletedCallback(new GoogleHTTPResponse
                     {
                         Request = state.Request,
                         Exception = ex
@@ -151,7 +150,7 @@ namespace GoogleMusicAPI
             }
 
             if (state.CompletedCallback != null)
-                state.CompletedCallback(new GoogleMusicResponse
+                state.CompletedCallback(new GoogleHTTPResponse
                 {
                     Request = state.Request,
                     Response = response,

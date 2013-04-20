@@ -75,7 +75,7 @@ namespace GoogleMusicAPI.Tests
             HttpWebRequest request = null; // TODO: Initialize to an appropriate value
             byte[] d = null; // TODO: Initialize to an appropriate value
             int millisecondsTimeout = 0; // TODO: Initialize to an appropriate value
-            Action<GoogleHTTP.GoogleMusicResponse> completedCallback = null; // TODO: Initialize to an appropriate value
+            Action<GoogleHTTPResponse> completedCallback = null; // TODO: Initialize to an appropriate value
             target.DownloadDataAsync(request, d, millisecondsTimeout, completedCallback);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
@@ -88,7 +88,7 @@ namespace GoogleMusicAPI.Tests
         {
             GoogleHTTP target = new GoogleHTTP(); // TODO: Initialize to an appropriate value
             Uri address = null; // TODO: Initialize to an appropriate value
-            Action<GoogleHTTP.GoogleMusicResponse> completedCallback = null; // TODO: Initialize to an appropriate value
+            Action<GoogleHTTPResponse> completedCallback = null; // TODO: Initialize to an appropriate value
             int millisecondsTimeout = 0; // TODO: Initialize to an appropriate value
             HttpWebRequest expected = null; // TODO: Initialize to an appropriate value
             HttpWebRequest actual;
@@ -147,7 +147,7 @@ namespace GoogleMusicAPI.Tests
             GoogleHTTP target = new GoogleHTTP(); // TODO: Initialize to an appropriate value
             Uri address = null; // TODO: Initialize to an appropriate value
             FormBuilder form = null; // TODO: Initialize to an appropriate value
-            Action<GoogleHTTP.GoogleMusicResponse> complete = null; // TODO: Initialize to an appropriate value
+            Action<GoogleHTTPResponse> complete = null; // TODO: Initialize to an appropriate value
             HttpWebRequest expected = null; // TODO: Initialize to an appropriate value
             HttpWebRequest actual;
             actual = target.UploadDataAsync(address, form, complete);
@@ -165,7 +165,7 @@ namespace GoogleMusicAPI.Tests
             Uri address = null; // TODO: Initialize to an appropriate value
             string contentType = string.Empty; // TODO: Initialize to an appropriate value
             byte[] data = null; // TODO: Initialize to an appropriate value
-            Action<GoogleHTTP.GoogleMusicResponse> completedCallback = null; // TODO: Initialize to an appropriate value
+            Action<GoogleHTTPResponse> completedCallback = null; // TODO: Initialize to an appropriate value
             HttpWebRequest expected = null; // TODO: Initialize to an appropriate value
             HttpWebRequest actual;
             actual = target.UploadDataAsync(address, contentType, data, completedCallback);

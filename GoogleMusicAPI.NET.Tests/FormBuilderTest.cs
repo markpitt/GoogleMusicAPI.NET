@@ -95,9 +95,10 @@ namespace GoogleMusicAPI.Tests
         [TestMethod()]
         public void AddFieldsTest()
         {
-            FormBuilder target = new FormBuilder(); // TODO: Initialize to an appropriate value
+            FormBuilder target = new FormBuilder();
             Dictionary<string, string> fields = null; // TODO: Initialize to an appropriate value
             target.AddFields(fields);
+
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
 
