@@ -166,7 +166,6 @@ namespace GoogleMusicAPI.Tests
             {
                 var api = new API();
                 var complete = new ManualResetEvent(false);
-                ShimGoogleLoginResponse.AllInstances.LoggedInSetBoolean = (@this, val) => @this.LoggedIn = val;
                 api.Login("email", "password", result =>
                     {
                         loggedIn = result.Data.LoggedIn;
