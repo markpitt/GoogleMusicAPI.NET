@@ -14,8 +14,6 @@ namespace GoogleMusicAPI
 
     public class GoogleHTTP
     {
-        public delegate void RequestCompletedEventHandler(HttpWebRequest request, HttpWebResponse response, String jsonData, Exception error);
-
         public static String AuthroizationToken = null;
         public static CookieContainer AuthorizationCookieCont = new CookieContainer();
         public static CookieCollection AuthorizationCookies = new CookieCollection();
@@ -26,12 +24,27 @@ namespace GoogleMusicAPI
             public byte[] UploadData { get; set; }
             public Action<GoogleHTTPResponse> CompletedCallback { get; set; }
         }
-        
+
+        /// <summary>
+        /// Uploads the data async.
+        /// </summary>
+        /// <param name="address">The address.</param>
+        /// <param name="form">The form.</param>
+        /// <param name="completedCallback">The completed callback.</param>
+        /// <returns></returns>
         public HttpWebRequest UploadDataAsync(Uri address, FormBuilder form, Action<GoogleHTTPResponse> completedCallback)
         {
             return UploadDataAsync(address, form.ContentType, form.GetBytes(), completedCallback);
         }
 
+        /// <summary>
+        /// Uploads the data async.
+        /// </summary>
+        /// <param name="address">The address.</param>
+        /// <param name="contentType">Type of the content.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="completedCallback">The completed callback.</param>
+        /// <returns></returns>
         public HttpWebRequest UploadDataAsync(Uri address, string contentType, byte[] data, Action<GoogleHTTPResponse> completedCallback)
         {
             HttpWebRequest request = SetupRequest(address);
@@ -47,6 +60,13 @@ namespace GoogleMusicAPI
         }
 
 
+        /// <summary>
+        /// Downloads the string async.
+        /// </summary>
+        /// <param name="address">The address.</param>
+        /// <param name="completedCallback">The completed callback.</param>
+        /// <param name="millisecondsTimeout">The milliseconds timeout.</param>
+        /// <returns></returns>
         public HttpWebRequest DownloadStringAsync(Uri address, Action<GoogleHTTPResponse> completedCallback, int millisecondsTimeout = 10000)
         {
             HttpWebRequest request = SetupRequest(address);
@@ -55,6 +75,13 @@ namespace GoogleMusicAPI
             return request;
         }
 
+        /// <summary>
+        /// Downloads the data async.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="millisecondsTimeout">The milliseconds timeout.</param>
+        /// <param name="completedCallback">The completed callback.</param>
         public void DownloadDataAsync(HttpWebRequest request, byte[] data, int millisecondsTimeout,
             Action<GoogleHTTPResponse> completedCallback)
         {
@@ -63,6 +90,12 @@ namespace GoogleMusicAPI
         }
 
 
+        /// <summary>
+        /// Setups the request.
+        /// </summary>
+        /// <param name="address">The address.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">address</exception>
         public virtual HttpWebRequest SetupRequest(Uri address)
         {
             if (address == null)
@@ -84,7 +117,11 @@ namespace GoogleMusicAPI
             return request;
         }
 
-        void OpenWrite(IAsyncResult ar)
+        /// <summary>
+        /// Opens the write.
+        /// </summary>
+        /// <param name="ar">The asynchronous result.</param>
+        private void OpenWrite(IAsyncResult ar)
         {
             RequestState state = (RequestState)ar.AsyncState;
 
@@ -126,7 +163,11 @@ namespace GoogleMusicAPI
             }
         }
 
-        void GetResponse(IAsyncResult ar)
+        /// <summary>
+        /// Gets the response.
+        /// </summary>
+        /// <param name="ar">The asynchronous result.</param>
+        private void GetResponse(IAsyncResult ar)
         {
             RequestState state = (RequestState)ar.AsyncState;
             HttpWebResponse response = null;
@@ -159,6 +200,11 @@ namespace GoogleMusicAPI
                 });
         }
 
+        /// <summary>
+        /// Gets the cookie value.
+        /// </summary>
+        /// <param name="cookieName">Name of the cookie.</param>
+        /// <returns></returns>
         public static String GetCookieValue(String cookieName)
         {
             foreach (Cookie cookie in AuthorizationCookies)
@@ -170,10 +216,15 @@ namespace GoogleMusicAPI
             return null;
         }
 
-        public static void SetCookieData(CookieContainer cont, CookieCollection coll)
+        /// <summary>
+        /// Sets the cookie data.
+        /// </summary>
+        /// <param name="cookieContainer">The cookie container.</param>
+        /// <param name="cookieCollection">The cookie collection.</param>
+        public static void SetCookieData(CookieContainer cookieContainer, CookieCollection cookieCollection)
         {
-            AuthorizationCookieCont = cont;
-            AuthorizationCookies = coll;
+            AuthorizationCookieCont = cookieContainer;
+            AuthorizationCookies = cookieCollection;
         }
     }
 }

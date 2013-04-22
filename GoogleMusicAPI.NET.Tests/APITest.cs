@@ -1,8 +1,10 @@
 ﻿using GoogleMusicAPI;
+using GoogleMusicAPI.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Microsoft.QualityTools.Testing.Fakes;
 
 namespace GoogleMusicAPI.Tests
 {
@@ -43,19 +45,27 @@ namespace GoogleMusicAPI.Tests
         [ClassInitialize()]
         public static void MyClassInitialize(TestContext testContext)
         {
-            string email = "email";
-            string password = "password";
+            //var stub = new StubAPI();
 
-            var completion = new ManualResetEvent(false);
+            //stub.Login("email", "password", result =>
+            //    {
+            //        loggedIn = result.Data.LoggedIn;
+            //    });
 
-            target.Login(email, password, (result) =>
-            {
-                loggedIn = result.Data.LoggedIn;
-                completion.Set();
-            });
 
-            completion.WaitOne();
-            Assert.IsTrue(loggedIn);
+            //string email = "email";
+            //string password = "password";
+
+            //var completion = new ManualResetEvent(false);
+
+            //target.Login(email, password, (result) =>
+            //{
+            //    loggedIn = result.Data.LoggedIn;
+            //    completion.Set();
+            //});
+
+            //completion.WaitOne();
+            //Assert.IsTrue(loggedIn);
         }
         //
         //Use ClassCleanup to run code after all tests in a class have run
@@ -151,21 +161,37 @@ namespace GoogleMusicAPI.Tests
         [TestMethod()]
         public void LoginTest()
         {
-            string email = "email";
-            string password = "password";
 
-            var completion = new ManualResetEvent(false);
-
-            bool loginState = false;
-
-            target.Login(email, password, (result) =>
+            using (ShimsContext.Create())
             {
-                loginState = result.Data.LoggedIn;
-                completion.Set();
-            });
+                var api = new API();
+                var complete = new ManualResetEvent(false);
+                ShimGoogleLoginResponse.AllInstances.LoggedInSetBoolean = (@this, val) => @this.LoggedIn = val;
+                api.Login("email", "password", result =>
+                    {
+                        loggedIn = result.Data.LoggedIn;
+                        complete.Set();
+                    });
+                complete.WaitOne();
+            }
 
-            completion.WaitOne();
-            Assert.IsTrue(loginState);
+
+
+            //string email = "email";
+            //string password = "password";
+
+            //var completion = new ManualResetEvent(false);
+
+            //bool loginState = false;
+
+            //target.Login(email, password, (result) =>
+            //{
+            //    loginState = result.Data.LoggedIn;
+            //    completion.Set();
+            //});
+
+            //completion.WaitOne();
+            //Assert.IsTrue(loginState);
         }
 
         /// <summary>
@@ -174,6 +200,7 @@ namespace GoogleMusicAPI.Tests
         [TestMethod()]
         public void AddToPlaylistTest()
         {
+
             API target = new API(); // TODO: Initialize to an appropriate value
             string playlistId = string.Empty; // TODO: Initialize to an appropriate value
             List<string> songIds = null; // TODO: Initialize to an appropriate value

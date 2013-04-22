@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace GoogleMusicAPI
 {
-    public class API
+    public class API 
     {
         #region Fields
 
