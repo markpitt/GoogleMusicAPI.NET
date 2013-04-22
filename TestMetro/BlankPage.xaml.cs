@@ -37,16 +37,16 @@ namespace TestMetro
 
         void OnGMLoginComplete(object s, EventArgs e)
         {
-            api.GetPlaylist();
+            api.GetAllSongs();
         }
 
         void api_OnGetPlaylistsComplete(GoogleMusicPlaylists pls)
         {
-            Dispatcher.Invoke(CoreDispatcherPriority.Normal, (x, y) => 
+            Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => 
             { 
                 foreach (GoogleMusicPlaylist p in pls.UserPlaylists)
                     lbPlaylists.Items.Add(p.Title); 
-            }, this, null);
+            });
             
         }
 
